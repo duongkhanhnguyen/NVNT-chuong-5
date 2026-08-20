@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phần Mềm Lý Thuyết & Thực Hành Ngoại Thương - Chương 5</title>
+    <style>
+        :root {
+            --bg-primary: #eef6f7;
+            --bg-card: #ffffff;
+            --accent-blue: #0284c7;
+            --accent-blue-light: #e0f2fe;
+            --accent-yellow-light: #fef9c3;
+            --accent-yellow-border: #fde047;
+            --accent-red: #ef4444;
+            --accent-red-hover: #dc2626;
+            --accent-green: #10b981;
+            --accent-green-hover: #059669;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Navigation Tabs */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-bottom: 2px solid var(--accent-blue-light);
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 18px 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+
+        .nav-link:hover {
+            background-color: var(--accent-blue-light);
+            color: var(--accent-blue);
+        }
+
+        .nav-link.active {
+            color: var(--accent-red);
+            border-bottom-color: var(--accent-red);
+            background-color: #ffffff;
+        }
+
+        /* Container Main Body */
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 20px auto;
+            padding: 0 15px;
+            flex: 1;
+        }
+
+        .tab-content {
+            display: none;
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Sub-tabs Styling */
+        .sub-nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sub-nav-link {
+            padding: 10px 18px;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .sub-nav-link:hover {
+            background-color: var(--accent-blue-light);
+            color: var(--accent-blue);
+        }
+
+        .sub-nav-link.active {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            border-color: var(--accent-blue);
+        }
+
+        .sub-tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .sub-tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* UI Components */
+        h1, h2, h3, h4 {
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--accent-blue-light);
+            padding-bottom: 8px;
+            margin-top: 15px;
+        }
+
+        p, li {
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        .btn {
+            background-color: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-red-hover);
+        }
+
+        .btn-green {
+            background-color: var(--accent-green);
+        }
+
+        .btn-green:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        /* Highlight Boxes */
+        .box-warning {
+            background-color: var(--accent-yellow-light);
+            border-left: 5px solid var(--accent-yellow-border);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .box-info {
+            background-color: var(--accent-blue-light);
+            border-left: 5px solid var(--accent-blue);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        /* Smart Diagram Cards */
+        .diagram-container {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .flow-chart {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .flow-step {
+            background-color: #ffffff;
+            border: 2px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 12px 18px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--accent-blue);
+            min-width: 140px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+
+        /* Dynamic Progress Bar Diagram */
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            height: 24px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--accent-green);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--accent-blue-light);
+            color: var(--accent-blue);
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.88rem;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Visual Simulator Widgets */
+        .simulator-card {
+            border: 2px dashed var(--accent-blue);
+            background-color: #f0f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .code-block {
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+
+        /* Math Display Styling */
+        .math-display {
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 15px 0;
+            color: var(--text-main);
+        }
+
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 4px;
+        }
+
+        .fraction .numerator {
+            border-bottom: 1.5px solid var(--text-main);
+            padding-bottom: 2px;
+        }
+
+        .fraction .denominator {
+            padding-top: 2px;
+        }
+
+        /* Document Form Grid Styling */
+        .doc-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .doc-form-full {
+            grid-column: 1 / -1;
+        }
+
+        /* Printable Paper Format (A4 Standard) */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 15mm;
+            }
+            body {
+                background: white;
+                color: black;
+                font-size: 10pt !important;
+                line-height: 1.15 !important;
+            }
+            header, main > section:not(.print-active) {
+                display: none !important;
+            }
+            main {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .tab-content {
+                box-shadow: none !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+                background: white !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .printable-doc {
+                display: block !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 10pt !important;
+                line-height: 1.15 !important;
+            }
+            .printable-doc table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+            }
+            .printable-doc th, .printable-doc td {
+                border: 1px solid #000 !important;
+                padding: 4px 6px !important;
+                font-size: 9pt !important;
+            }
+            .student-submission-header {
+                display: block !important;
+                border-bottom: 2px solid #000;
+                padding-bottom: 5px;
+                margin-bottom: 15px;
+            }
+        }
+
+        .student-submission-header {
+            display: none;
+        }
+
+        .printable-area {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .doc-header-title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .doc-sub-header {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="no-print">
+        <ul class="nav-tabs">
+            <li class="nav-item"><a class="nav-link active" onclick="switchTab(event, 'tab-info')">THÔNG TIN CHUNG</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab(event, 'tab-theory')">LÝ THUYẾT CHUNG</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab(event, 'tab-practice')">THỰC HÀNH LẬP CHỨNG TỪ</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab(event, 'tab-exercise')">BÀI TẬP MINH HOẠ</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="switchTab(event, 'tab-quiz')">BÀI TẬP KIỂM TRA</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <section id="tab-info" class="tab-content active">
+            <h2>THÔNG TIN SINH VIÊN & LỚP HỌC</h2>
+            <div class="box-info">
+                Vui lòng điền đầy đủ thông tin cá nhân trước khi thực hành các nội dung bài tập, lập chứng từ và kiểm tra.
+            </div>
+            <form id="student-info-form" style="max-width: 600px; margin-top: 20px;">
+                <div class="form-group">
+                    <label for="fullname">Họ và Tên Sinh Viên:</label>
+                    <input type="text" id="fullname" placeholder="Nhập đầy đủ họ tên...">
+                </div>
+                <div class="form-group">
+                    <label for="student-id">Mã Số Sinh Viên (MSSV):</label>
+                    <input type="text" id="student-id" placeholder="Nhập MSSV...">
+                </div>
+                <div class="form-group">
+                    <label for="class-id">Lớp Học Phần:</label>
+                    <input type="text" id="class-id" placeholder="Nhập tên lớp học phần...">
+                </div>
+                <button type="button" class="btn" onclick="saveStudentInfo()">LƯU THÔNG TIN</button>
+            </form>
+            <div id="info-display" class="box-warning" style="display:none; margin-top: 20px;">
+                <strong>Hệ thống xác nhận:</strong> <span id="display-text"></span>
+            </div>
+        </section>
+
+        <section id="tab-theory" class="tab-content">
+            <h1>CHƯƠNG 5: LẬP VÀ THẨM ĐỊNH BỘ CHỨNG TỪ NGOẠI THƯƠNG</h1>
+            
+            <div class="box-info" style="margin-bottom: 20px;">
+                <strong>MỤC TIÊU BÀI HỌC:</strong>
+                <ul>
+                    <li>Hiểu rõ chức năng, cấu trúc pháp lý và kỹ thuật của Invoice, Packing List, B/L, AWB, C/O và Bảo hiểm.</li>
+                    <li>Nắm vững các quy tắc xuất xứ ưu đãi FTA (CTC, RVC, De Minimis) và logic liên kết dữ liệu giữa các chứng từ.</li>
+                    <li>Thành thạo công cụ tự động hóa template, tính toán phí và ứng dụng AI để thẩm định bất đồng chứng từ.</li>
+                </ul>
+            </div>
+
+            <div class="sub-nav-tabs">
+                <button class="sub-nav-link active" onclick="switchSubTab(event, 'sub-tab-51')">5.1. Invoice & Packing List</button>
+                <button class="sub-nav-link" onclick="switchSubTab(event, 'sub-tab-52')">5.2. Chứng Từ Vận Tải & Bảo Hiểm</button>
+                <button class="sub-nav-link" onclick="switchSubTab(event, 'sub-tab-53')">5.3. Kê Khai Xuất Xứ (C/O)</button>
+                <button class="sub-nav-link" onclick="switchSubTab(event, 'sub-tab-54')">5.4. Thẩm Định Chứng Từ & Kiểm Tra AI</button>
+            </div>
+
+            <div id="sub-tab-51" class="sub-tab-content active">
+                <h2>5.1. Lập Hóa đơn Thương mại (Invoice) & Phiếu đóng gói (Packing List)</h2>
+                
+                <p><strong>5.1.1. Yêu cầu kỹ thuật và nguyên tắc đồng bộ dữ liệu</strong></p>
+                <ul>
+                    <li><strong>Commercial Invoice (CI):</strong> Chứng từ thanh toán, thể hiện nghĩa vụ tài chính, là căn cứ tính thuế quan và khai báo Hải quan.</li>
+                    <li><strong>Packing List (PL):</strong> Chứng từ đóng gói, chi tiết hóa quy cách, trọng lượng, thể tích; phục vụ công tác kiểm hóa, xếp dỡ và giao nhận.</li>
+                </ul>
+
+                <div class="diagram-container">
+                    <h3>Sơ Đồ Thông Minh: Luồng Dữ Liệu Tự Động (Data Pipeline Diagram)</h3>
+                    <div class="flow-chart">
+                        <div class="flow-step">DATA_MASTER<br><small>(Hệ thống dữ liệu gốc)</small></div>
+                        <div class="flow-arrow">➔</div>
+                        <div class="flow-step">Trích xuất Hàm<br><small>(XLOOKUP / VLOOKUP)</small></div>
+                        <div class="flow-arrow">➔</div>
+                        <div class="flow-step">INVOICE<br><small>(Thanh toán & Thuế)</small></div>
+                        <div class="flow-arrow">+</div>
+                        <div class="flow-step">PACKING LIST<br><small>(Kiểm hóa & Giao nhận)</small></div>
+                    </div>
+                </div>
+
+                <div class="box-warning">
+                    <strong>Nguyên tắc "Vàng" về Đồng bộ Dữ liệu (Data Consistency):</strong>
+                    <ul>
+                        <li>Sự phù hợp 100%: Số hợp đồng, thông tin Shipper/Consignee, tên hàng, Mã HS, Điều kiện giao hàng (Incoterms 2020) phải trùng khớp tuyệt đối.</li>
+                        <li>Logic Toán học: Total Quantity (CI) = Total Quantity (PL); Gross Weight (GW) ≥ Net Weight (NW).</li>
+                        <li>Thể tích: CBM = Chiều dài (m) × Chiều rộng (m) × Chiều cao (m) × Số thùng.</li>
+                    </ul>
+                </div>
+
+                <p><strong>5.1.2. Mô Phỏng Động: Xem Trước Hóa Đơn Tự Động (Invoice Interactive Preview)</strong></p>
+                <div class="simulator-card">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                        <div><label>Mô tả Hàng hóa:</label><input type="text" id="sim-prod-name" value="Frozen Pangasius Fillet" oninput="updateInvoicePreview()"></div>
+                        <div><label>Số lượng (Cartons):</label><input type="number" id="sim-prod-qty" value="1000" oninput="updateInvoicePreview()"></div>
+                        <div><label>Đơn giá (USD/Carton):</label><input type="number" id="sim-prod-price" value="25" oninput="updateInvoicePreview()"></div>
+                    </div>
+                    <div id="invoice-preview-box" class="box-info" style="margin-top: 15px; background: white; border: 1px solid var(--accent-blue);">
+                        <h4>COMMERCIAL INVOICE PREVIEW</h4>
+                        <hr style="margin: 8px 0;">
+                        <p><strong>Item Description:</strong> <span id="prev-name">Frozen Pangasius Fillet</span></p>
+                        <p><strong>Quantity:</strong> <span id="prev-qty">1000</span> Cartons</p>
+                        <p><strong>Unit Price:</strong> $<span id="prev-price">25</span> USD</p>
+                        <p style="font-size: 1.1rem; color: var(--accent-red);"><strong>TOTAL AMOUNT: $<span id="prev-total">25000</span> USD</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sub-tab-52" class="sub-tab-content">
+                <h2>5.2. Phát hành Chứng từ Vận tải & Chứng từ Bảo hiểm</h2>
+                
+                <p><strong>5.2.1. Phân tích và phân biệt Chứng từ Vận tải</strong></p>
+
+                <div class="diagram-container">
+                    <h3>Sơ Đồ Luồng Gửi Hàng & Phát Hành Bill (Logistics Workflow)</h3>
+                    <div class="flow-chart">
+                        <div class="flow-step" style="border-color: #8b5cf6;">Shipper Thực tế</div>
+                        <div class="flow-arrow">➔ <small>HBL</small> ➔</div>
+                        <div class="flow-step" style="border-color: #ec4899;">Forwarder</div>
+                        <div class="flow-arrow">➔ <small>MBL</small> ➔</div>
+                        <div class="flow-step" style="border-color: #10b981;">Hãng Tàu (Carrier)</div>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tiêu chí</th>
+                            <th>Master Bill of Lading (MBL)</th>
+                            <th>House Bill of Lading (HBL)</th>
+                            <th>Seaway Bill</th>
+                            <th>Air Waybill (AWB)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Bên phát hành</strong></td>
+                            <td>Hãng tàu (Ocean Carrier)</td>
+                            <td>Công ty Forwarder</td>
+                            <td>Hãng tàu / Forwarder</td>
+                            <td>Hãng hàng không (Airline)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bên gửi hàng</strong></td>
+                            <td>Forwarder (hoặc Shipper thực)</td>
+                            <td>Shipper thực tế</td>
+                            <td>Shipper thực tế</td>
+                            <td>Shipper thực tế</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bên nhận hàng</strong></td>
+                            <td>Đại lý Forwarder / Consignee</td>
+                            <td>Consignee thực tế</td>
+                            <td>Consignee thực tế</td>
+                            <td>Consignee thực tế</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tính lưu thông</strong></td>
+                            <td>Có (nếu là Bill lệnh - To Order)</td>
+                            <td>Có (nếu là Bill lệnh)</td>
+                            <td>Không (Non-negotiable)</td>
+                            <td>Không (Non-negotiable)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Quyền nhận hàng</strong></td>
+                            <td>Phải trình diện B/L gốc</td>
+                            <td>Phải trình diện B/L gốc</td>
+                            <td>Không cần Bill gốc, xác minh danh tính</td>
+                            <td>Không cần Bill gốc, giao theo tên AWB</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>5.2.2. Quy trình tính phí bảo hiểm & Lập Insurance Application</strong></p>
+                <p>Mô phỏng công thức tính Giá trị Bảo hiểm (V) và Số tiền Bảo hiểm (I):</p>
+                <div class="box-info">
+                    <div class="math-display">
+                        V = <div class="fraction"><span class="numerator">CIF</span><span class="denominator">1 - R</span></div>
+                        &nbsp;&nbsp;&nbsp;hoặc&nbsp;&nbsp;&nbsp;
+                        I = <div class="fraction"><span class="numerator">CFR × (1 + a)</span><span class="denominator">1 - R</span></div>
+                    </div>
+                    <p>Trong đó: <strong>a</strong> là tỷ lệ cộng thêm (thường 10%), <strong>R</strong> là tỷ lệ phí bảo hiểm (Insurance Rate). Phí bảo hiểm <strong>P = I × R</strong>.</p>
+                </div>
+            </div>
+
+            <div id="sub-tab-53" class="sub-tab-content">
+                <h2>5.3. Kê khai Giấy chứng nhận Xuất xứ Hàng hóa (C/O)</h2>
+                
+                <p><strong>5.3.1. Các Quy tắc Xuất xứ Ưu đãi (Preferential Rules of Origin)</strong></p>
+                <ul>
+                    <li><strong>WO (Wholly Obtained):</strong> Xuất xứ thuần túy (Nông sản, khoáng sản khai thác tự nhiên).</li>
+                    <li><strong>CTC (Change in Tariff Classification):</strong> Chuyển đổi mã HS (CC, CTH, CTSH).</li>
+                    <li><strong>RVC (Regional Value Content):</strong> Hàm lượng giá trị khu vực.</li>
+                </ul>
+
+                <div class="box-info">
+                    <p><strong>Công thức Trực tiếp (Direct Method):</strong></p>
+                    <div class="math-display">
+                        RVC = <div class="fraction"><span class="numerator">VNM + Direct Labour + Direct Overhead + Other Costs + Profit</span><span class="denominator">FOB Price</span></div> × 100%
+                    </div>
+                    <p><strong>Công thức Gián tiếp (Indirect Method):</strong></p>
+                    <div class="math-display">
+                        RVC = <div class="fraction"><span class="numerator">FOB Price - VNM</span><span class="denominator">FOB Price</span></div> × 100%
+                    </div>
+                </div>
+
+                <p><strong>5.3.2. Sơ đồ Mô Phỏng Trực Quan Tỷ Lệ Đạt Xuất Xứ (Dynamic Origin Bar)</strong></p>
+                <div class="simulator-card">
+                    <p>Nhập hàm lượng RVC thực tế để xem khả năng phê duyệt C/O:</p>
+                    <div style="display: flex; gap: 10px; align-items: center; margin: 10px 0;">
+                        <label style="white-space: nowrap;">Tỷ lệ RVC Tính toán (%):</label>
+                        <input type="number" id="sim-rvc-input" value="45" max="100" min="0" oninput="updateRVCBar()">
+                    </div>
+                    <div>
+                        <small>Mức chuẩn FTA yêu cầu: <strong>40%</strong></small>
+                        <div class="progress-bar-container">
+                            <div id="rvc-bar-fill" class="progress-bar-fill" style="width: 45%;">45%</div>
+                        </div>
+                        <p id="rvc-status-text" style="font-weight: bold; color: var(--accent-green);">Status: Đạt tiêu chuẩn cấp C/O Ưu đãi</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sub-tab-54" class="sub-tab-content">
+                <h2>5.4. Thẩm định Tính thống nhất của Bộ chứng từ (Documentary Verification)</h2>
+                
+                <p><strong>5.4.1. Bảng đối soát chứng từ (Discrepancy Sheet) mẫu</strong></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hạng mục kiểm tra</th>
+                            <th>Chứng từ 1 (Gốc)</th>
+                            <th>Chứng từ 2 (Đối soát)</th>
+                            <th>Tình trạng</th>
+                            <th>Giải pháp xử lý</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mô tả hàng hóa</td>
+                            <td>Invoice: "Frozen Pangasius Fillet"</td>
+                            <td>B/L: "Fish Fillet"</td>
+                            <td><span style="color: darkorange; font-weight: bold;">⚠️ Bất đồng</span></td>
+                            <td>Sửa B/L thành "Frozen Pangasius Fillet"</td>
+                        </tr>
+                        <tr>
+                            <td>Tổng số kiện</td>
+                            <td>Packing List: 1,200 Cartons</td>
+                            <td>B/L: 1,020 Cartons</td>
+                            <td><span style="color: var(--accent-red); font-weight: bold;">❌ Sai lệch nghiêm trọng</span></td>
+                            <td>Kiểm tra thực tế, đếm lại số kiện và chỉnh sửa</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>5.4.2. Kiểm tra chứng từ bằng công nghệ AI (AI-Powered Audit)</strong></p>
+                
+                <div class="diagram-container">
+                    <h3>Sơ Đồ Quy Trình Thẩm Định Bằng Trí Tuệ Nhân Tạo (AI Audit Pipeline)</h3>
+                    <div class="flow-chart">
+                        <div class="flow-step">Dữ liệu thô<br><small>(Invoice/PL/BL Text)</small></div>
+                        <div class="flow-arrow">➔</div>
+                        <div class="flow-step" style="border-color: var(--accent-red);">Nạp AI Prompt<br><small>(Chuyên gia UCP 600)</small></div>
+                        <div class="flow-arrow">➔</div>
+                        <div class="flow-step" style="border-color: var(--accent-green);">Báo cáo Sai lệch<br><small>(Risk Assessment Sheet)</small></div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+Mẫu Prompt AI Audit Chuẩn:
+"Bạn là một chuyên gia thẩm định chứng từ thanh toán quốc tế (UCP 600). Hãy đối soát dữ liệu text từ 3 chứng từ sau: [Paste text Invoice], [Paste text Packing List], [Paste text Bill of Lading]. Hãy tìm ra 03 điểm bất đồng về: 1) Số lượng/Trọng lượng; 2) Mô tả hàng hóa; 3) Ngày tháng phát hành. Xuất kết quả dưới dạng Bảng phân tích sai lệch và đánh giá mức độ rủi ro."
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-practice" class="tab-content">
+            <h2>THỰC HÀNH LẬP CHỨNG TỪ XUẤT NHẬP KHẨU (MẪU ĐẦY ĐỦ THỰC TẾ)</h2>
+            <div class="box-info no-print">
+                Sinh viên nhập dữ liệu vào các ô thông tin dưới đây. Mẫu chứng từ hiển thị sẽ tự động cập nhật đầy đủ các tiêu đề, điều khoản và bảng kê chi tiết theo chuẩn chứng từ thương mại quốc tế. Nhấn nút <strong>"IN CHỨNG TỪ (PDF A4)"</strong> để hoàn tất bài nộp.
+            </div>
+
+            <div class="sub-nav-tabs no-print">
+                <button class="sub-nav-link active" onclick="switchPracticeSubTab(event, 'sub-prac-inv')">1. Commercial Invoice (Hóa Đơn)</button>
+                <button class="sub-nav-link" onclick="switchPracticeSubTab(event, 'sub-prac-pl')">2. Packing List (Phiếu Đóng Gói)</button>
+                <button class="sub-nav-link" onclick="switchPracticeSubTab(event, 'sub-prac-transport')">3. Vận Tải & Bảo Hiểm (B/L & Insurance)</button>
+            </div>
+
+            <div id="sub-prac-inv" class="sub-tab-content active">
+                <div class="no-print">
+                    <h3>NHẬP THÔNG TIN COMMERCIAL INVOICE (CHI TIẾT)</h3>
+                    <div class="doc-form-grid">
+                        <div><label>Invoice No. (Số Hóa Đơn):</label><input type="text" id="inv-no" value="INV-2026-001" oninput="renderDoc('inv')"></div>
+                        <div><label>Invoice Date (Ngày):</label><input type="date" id="inv-date" value="2026-08-18" oninput="renderDoc('inv')"></div>
+                        <div><label>Shipper / Exporter:</label><textarea id="inv-shipper" rows="2" oninput="renderDoc('inv')">VIETNAM EXPORT SEAFOOD JOINT STOCK COMPANY&#10;123 Le Loi Street, District 1, Ho Chi Minh City, Vietnam&#10;Tel: +84-28-38291000 | Tax Code: 0300123456</textarea></div>
+                        <div><label>Consignee / Importer:</label><textarea id="inv-consignee" rows="2" oninput="renderDoc('inv')">GLOBAL TRADING FOODS CORP&#10;456 Market Street, Suite 800, San Francisco, CA 94105, USA&#10;Tel: +1-415-555-0199 | Attn: Mr. David Smith</textarea></div>
+                        <div><label>Notify Party:</label><textarea id="inv-notify" rows="2" oninput="renderDoc('inv')">PACIFIC LOGISTICS SERVICES LLC&#10;789 Ocean Avenue, San Francisco, CA 94111, USA</textarea></div>
+                        <div><label>Contract No. & Date:</label><input type="text" id="inv-contract" value="CT-2026/VNE-GTC dated Aug 10, 2026" oninput="renderDoc('inv')"></div>
+                        <div><label>L/C No. & Issuing Bank:</label><input type="text" id="inv-lc" value="LC123456789 - Bank of America, N.A." oninput="renderDoc('inv')"></div>
+                        <div><label>Payment Terms:</label><input type="text" id="inv-payment" value="By Irrevocable L/C at sight 100%" oninput="renderDoc('inv')"></div>
+                        <div><label>Incoterms & Price Term:</label><input type="text" id="inv-incoterms" value="CIF San Francisco Port, USA (Incoterms 2020)" oninput="renderDoc('inv')"></div>
+                        <div><label>Vessel / Voyage (Tàu/Chuyến):</label><input type="text" id="inv-vessel" value="OCEAN STAR V.2608E" oninput="renderDoc('inv')"></div>
+                        <div><label>Port of Loading (Cảng đi):</label><input type="text" id="inv-pol" value="Cat Lai Port, Ho Chi Minh City, Vietnam" oninput="renderDoc('inv')"></div>
+                        <div><label>Port of Discharge (Cảng đến):</label><input type="text" id="inv-pod" value="San Francisco Port, CA, USA" oninput="renderDoc('inv')"></div>
+                        <div><label>Shipping Marks & Nos:</label><input type="text" id="inv-marks" value="GLOBAL TRADING / SAN FRANCISCO / C/NO. 1-1000" oninput="renderDoc('inv')"></div>
+                        <div><label>Beneficiary Bank Details:</label><input type="text" id="inv-bank" value="Vietcombank HCMC Branch | A/C: 0071000999888 | SWIFT: BFTVVNVX" oninput="renderDoc('inv')"></div>
+                        <div><label>Goods Description:</label><input type="text" id="inv-desc" value="FROZEN PANGAUSIUS FILLET (WELL TRIMMED, SKINLESS, BONELESS)" oninput="renderDoc('inv')"></div>
+                        <div><label>HS Code:</label><input type="text" id="inv-hscode" value="0304.62.00" oninput="renderDoc('inv')"></div>
+                        <div><label>Quantity (Cartons):</label><input type="number" id="inv-qty" value="1000" oninput="renderDoc('inv')"></div>
+                        <div><label>Unit Price (USD/Carton):</label><input type="number" id="inv-price" value="35.00" oninput="renderDoc('inv')"></div>
+                    </div>
+                    <button class="btn btn-green" onclick="printDoc('inv-preview-area')">🖨️ IN HÓA ĐƠN THƯƠNG MẠI FULL (PDF A4)</button>
+                </div>
+
+                <div id="inv-preview-area" class="printable-area">
+                    <div class="student-submission-header">
+                        <p><strong>BÀI NỘP THỰC HÀNH - THÔNG TIN SINH VIÊN</strong></p>
+                        <p>Họ và tên: <span class="print-student-name">....................................................</span> | MSSV: <span class="print-student-id">........................</span> | Lớp: <span class="print-student-class">........................</span></p>
+                    </div>
+                    <div class="printable-doc">
+                        <div class="doc-header-title">COMMERCIAL INVOICE</div>
+                        <div class="doc-sub-header">ORIGINAL / PAYMENT DOCUMENT</div>
+                        
+                        <table>
+                            <tr>
+                                <td width="55%" rowspan="2" valign="top">
+                                    <strong>EXPORTER / SHIPPER:</strong><br>
+                                    <span id="doc-inv-shipper"></span>
+                                </td>
+                                <td width="45%" valign="top">
+                                    <strong>INVOICE NO:</strong> <span id="doc-inv-no"></span><br>
+                                    <strong>DATE:</strong> <span id="doc-inv-date"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>CONTRACT NO & DATE:</strong><br><span id="doc-inv-contract"></span><br>
+                                    <strong>L/C NO & ISSUING BANK:</strong><br><span id="doc-inv-lc"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>CONSIGNEE:</strong><br>
+                                    <span id="doc-inv-consignee"></span>
+                                </td>
+                                <td valign="top">
+                                    <strong>TERMS OF PAYMENT:</strong><br><span id="doc-inv-payment"></span><br>
+                                    <strong>TERMS OF DELIVERY:</strong><br><span id="doc-inv-incoterms"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>NOTIFY PARTY:</strong><br>
+                                    <span id="doc-inv-notify"></span>
+                                </td>
+                                <td valign="top">
+                                    <strong>BENEFICIARY'S BANK:</strong><br>
+                                    <span id="doc-inv-bank"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>VESSEL / VOYAGE NO:</strong> <span id="doc-inv-vessel"></span><br>
+                                    <strong>PORT OF LOADING:</strong> <span id="doc-inv-pol"></span>
+                                </td>
+                                <td>
+                                    <strong>PORT OF DISCHARGE:</strong> <span id="doc-inv-pod"></span><br>
+                                    <strong>FINAL DESTINATION:</strong> San Francisco, CA, USA
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th width="15%">Marks & Nos</th>
+                                    <th width="40%">Description of Goods</th>
+                                    <th width="12%">HS Code</th>
+                                    <th width="10%">Quantity</th>
+                                    <th width="11%">Unit Price</th>
+                                    <th width="12%">Amount (USD)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td valign="top"><span id="doc-inv-marks"></span></td>
+                                    <td valign="top">
+                                        <strong id="doc-inv-desc"></strong><br>
+                                        <small>- Net Weight: 10,000.00 KGS</small><br>
+                                        <small>- Gross Weight: 11,500.00 KGS</small><br>
+                                        <small>- Storage Temperature: -18 Degree Celsius</small>
+                                    </td>
+                                    <td valign="top" style="text-align:center;"><span id="doc-inv-hscode"></span></td>
+                                    <td valign="top" style="text-align:right;"><span id="doc-inv-qty"></span> CTNS</td>
+                                    <td valign="top" style="text-align:right;">$<span id="doc-inv-price"></span></td>
+                                    <td valign="top" style="text-align:right;"><strong>$<span id="doc-inv-total"></span></strong></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="text-align:right;"><strong>TOTAL QUANTITY & AMOUNT:</strong></td>
+                                    <td style="text-align:right;"><strong><span id="doc-inv-qty-2"></span> CTNS</strong></td>
+                                    <td></td>
+                                    <td style="text-align:right;"><strong>$<span id="doc-inv-total-2"></span></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p style="margin-top: 10px; font-size: 0.85rem;"><strong>SAY TOTAL AMOUNT IN WORDS:</strong> <span id="doc-inv-words" style="font-style: italic; font-weight: bold;"></span></p>
+
+                        <div style="margin-top: 30px; display: table; width: 100%;">
+                            <div style="display: table-cell; width: 50%; font-size: 0.8rem;" valign="bottom">
+                                <i>Declaration: We hereby guarantee that this invoice shows the actual price of the goods described and that all particulars are true and correct.</i>
+                            </div>
+                            <div style="display: table-cell; width: 50%; text-align: center;" valign="bottom">
+                                <strong>FOR AND ON BEHALF OF EXPORTER</strong><br><br><br><br>
+                                ___________________________________<br>
+                                Authorized Signature & Stamp
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sub-prac-pl" class="sub-tab-content">
+                <div class="no-print">
+                    <h3>NHẬP THÔNG TIN PACKING LIST (CHI TIẾT)</h3>
+                    <div class="doc-form-grid">
+                        <div><label>Packing List No.:</label><input type="text" id="pl-no" value="PL-2026-001" oninput="renderDoc('pl')"></div>
+                        <div><label>Date (Ngày):</label><input type="date" id="pl-date" value="2026-08-18" oninput="renderDoc('pl')"></div>
+                        <div><label>Shipper / Exporter:</label><textarea id="pl-shipper" rows="2" oninput="renderDoc('pl')">VIETNAM EXPORT SEAFOOD JOINT STOCK COMPANY&#10;123 Le Loi Street, District 1, Ho Chi Minh City, Vietnam</textarea></div>
+                        <div><label>Consignee / Importer:</label><textarea id="pl-consignee" rows="2" oninput="renderDoc('pl')">GLOBAL TRADING FOODS CORP&#10;456 Market Street, Suite 800, San Francisco, CA 94105, USA</textarea></div>
+                        <div><label>Invoice Ref & Date:</label><input type="text" id="pl-inv-ref" value="INV-2026-001 dated Aug 18, 2026" oninput="renderDoc('pl')"></div>
+                        <div><label>Container / Seal No.:</label><input type="text" id="pl-cont" value="TCLU8899123 / SEAL: VN123456" oninput="renderDoc('pl')"></div>
+                        <div><label>Ports Loading / Discharge:</label><input type="text" id="pl-ports" value="Cat Lai Port, Vietnam / San Francisco Port, USA" oninput="renderDoc('pl')"></div>
+                        <div><label>Description of Goods:</label><input type="text" id="pl-desc" value="FROZEN PANGAUSIUS FILLET (PACKING: 10 KGS NET PER CARTON)" oninput="renderDoc('pl')"></div>
+                        <div><label>Total Packages (Cartons):</label><input type="number" id="pl-qty" value="1000" oninput="renderDoc('pl')"></div>
+                        <div><label>Net Weight per Carton (kg):</label><input type="number" id="pl-nw-pkg" value="10" oninput="renderDoc('pl')"></div>
+                        <div><label>Gross Weight per Carton (kg):</label><input type="number" id="pl-gw-pkg" value="11.5" oninput="renderDoc('pl')"></div>
+                        <div><label>Measurement CBM per Carton:</label><input type="number" id="pl-cbm-pkg" value="0.025" step="0.001" oninput="renderDoc('pl')"></div>
+                    </div>
+                    <button class="btn btn-green" onclick="printDoc('pl-preview-area')">🖨️ IN PHIẾU ĐÓNG GÓI FULL (PDF A4)</button>
+                </div>
+
+                <div id="pl-preview-area" class="printable-area">
+                    <div class="student-submission-header">
+                        <p><strong>BÀI NỘP THỰC HÀNH - THÔNG TIN SINH VIÊN</strong></p>
+                        <p>Họ và tên: <span class="print-student-name">....................................................</span> | MSSV: <span class="print-student-id">........................</span> | Lớp: <span class="print-student-class">........................</span></p>
+                    </div>
+                    <div class="printable-doc">
+                        <div class="doc-header-title">DETAILED PACKING LIST</div>
+                        <div class="doc-sub-header">WEIGHT & MEASUREMENT SPECIFICATION</div>
+
+                        <table>
+                            <tr>
+                                <td width="55%" valign="top">
+                                    <strong>EXPORTER / SHIPPER:</strong><br>
+                                    <span id="doc-pl-shipper"></span>
+                                </td>
+                                <td width="45%" valign="top">
+                                    <strong>PACKING LIST NO:</strong> <span id="doc-pl-no"></span><br>
+                                    <strong>DATE:</strong> <span id="doc-pl-date"></span><br>
+                                    <strong>INVOICE NO & DATE:</strong> <span id="doc-pl-inv-ref"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>CONSIGNEE:</strong><br>
+                                    <span id="doc-pl-consignee"></span>
+                                </td>
+                                <td valign="top">
+                                    <strong>CONTAINER / SEAL NO:</strong><br><span id="doc-pl-cont"></span><br>
+                                    <strong>PORTS OF LOADING/DISCHARGE:</strong><br><span id="doc-pl-ports"></span>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ctn No. Range</th>
+                                    <th>Description of Goods</th>
+                                    <th>Quantity</th>
+                                    <th>NW / Ctn</th>
+                                    <th>GW / Ctn</th>
+                                    <th>Total NW (KGS)</th>
+                                    <th>Total GW (KGS)</th>
+                                    <th>Meas (CBM)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:center;">0001 - 1000</td>
+                                    <td>
+                                        <span id="doc-pl-desc"></span><br>
+                                        <small>Outer Packaging: Master Corrugated Carton</small>
+                                    </td>
+                                    <td style="text-align:right;"><span id="doc-pl-qty"></span> CTNS</td>
+                                    <td style="text-align:right;"><span id="doc-pl-nw-pkg"></span> KG</td>
+                                    <td style="text-align:right;"><span id="doc-pl-gw-pkg"></span> KG</td>
+                                    <td style="text-align:right;"><span id="doc-pl-total-nw"></span></td>
+                                    <td style="text-align:right;"><span id="doc-pl-total-gw"></span></td>
+                                    <td style="text-align:right;"><span id="doc-pl-total-cbm"></span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right;"><strong>TOTAL SUMMARY:</strong></td>
+                                    <td style="text-align:right;"><strong><span id="doc-pl-qty-2"></span> CTNS</strong></td>
+                                    <td colspan="2"></td>
+                                    <td style="text-align:right;"><strong><span id="doc-pl-total-nw-2"></span> KGS</strong></td>
+                                    <td style="text-align:right;"><strong><span id="doc-pl-total-gw-2"></span> KGS</strong></td>
+                                    <td style="text-align:right;"><strong><span id="doc-pl-total-cbm-2"></span> CBM</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 15px; font-size: 0.85rem; border: 1px solid #cbd5e1; padding: 8px;">
+                            <strong>PACKING & SUMMARY BREAKDOWN:</strong><br>
+                            - Package Type: 1,000 Master Cartons loaded into 1x40' Reefer Container.<br>
+                            - Temperature Setting: Set at -18°C, Ventilation Closed.<br>
+                            - Tare Weight of Container: 4,200.00 KGS. Total Gross Weight with Container: <span id="doc-pl-total-vessel-gw"></span> KGS.
+                        </div>
+
+                        <div style="margin-top: 30px; display: table; width: 100%;">
+                            <div style="display: table-cell; width: 60%;"></div>
+                            <div style="display: table-cell; width: 40%; text-align: center;">
+                                <strong>FOR AND ON BEHALF OF EXPORTER</strong><br><br><br><br>
+                                ___________________________________<br>
+                                Authorized Signature & Stamp
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sub-prac-transport" class="sub-tab-content">
+                <div class="no-print">
+                    <h3>NHẬP THÔNG TIN VẬN TẢI & BẢO HIỂM (CHI TIẾT MẪU FULL)</h3>
+                    <div class="doc-form-grid">
+                        <div class="doc-form-full"><h4 style="color:var(--accent-blue); border-bottom:1px solid #cbd5e1; padding-bottom:5px;">1. CERTIFICATE OF INSURANCE (BẢO HIỂM)</h4></div>
+                        <div><label>Policy / Certificate No.:</label><input type="text" id="tr-ins-no" value="INS-2026-8899/BAOVIET" oninput="renderDoc('tr')"></div>
+                        <div><label>Insured Person (Người bảo hiểm):</label><input type="text" id="tr-insured" value="GLOBAL TRADING FOODS CORP" oninput="renderDoc('tr')"></div>
+                        <div><label>Sum Insured (USD - 110% CIF):</label><input type="number" id="tr-ins-sum" value="38500" oninput="renderDoc('tr')"></div>
+                        <div><label>Insurance Conditions/Clauses:</label><input type="text" id="tr-ins-cond" value="Institute Cargo Clauses (A) 1/1/82 - All Risks including Frozen Food Extension Clause" oninput="renderDoc('tr')"></div>
+                        <div><label>Claim Payable At (Nơi bồi thường):</label><input type="text" id="tr-claim" value="San Francisco, USA in USD currency" oninput="renderDoc('tr')"></div>
+
+                        <div class="doc-form-full"><h4 style="color:var(--accent-blue); border-bottom:1px solid #cbd5e1; padding-bottom:5px; margin-top:10px;">2. OCEAN BILL OF LADING / AIR WAYBILL (VẬN TẢI)</h4></div>
+                        <div><label>B/L or AWB No.:</label><input type="text" id="tr-bl-no" value="MAEU123456789" oninput="renderDoc('tr')"></div>
+                        <div><label>Carrier (Hãng tàu/Hàng không):</label><input type="text" id="tr-carrier" value="MAERSK LINE CO., LTD" oninput="renderDoc('tr')"></div>
+                        <div><label>Shipper:</label><input type="text" id="tr-shipper" value="VIETNAM EXPORT SEAFOOD JOINT STOCK COMPANY" oninput="renderDoc('tr')"></div>
+                        <div><label>Consignee:</label><textarea id="tr-consignee" rows="2" oninput="renderDoc('tr')">TO THE ORDER OF BANK OF AMERICA, N.A.&#10;SAN FRANCISCO BRANCH, USA</textarea></div>
+                        <div><label>Notify Party:</label><textarea id="tr-notify" rows="2" oninput="renderDoc('tr')">GLOBAL TRADING FOODS CORP&#10;456 Market Street, San Francisco, CA 94105, USA</textarea></div>
+                        <div><label>Port of Loading / Departure:</label><input type="text" id="tr-pol" value="Cat Lai Port, Ho Chi Minh City, Vietnam" oninput="renderDoc('tr')"></div>
+                        <div><label>Port of Discharge / Destination:</label><input type="text" id="tr-pod" value="San Francisco Port, CA, USA" oninput="renderDoc('tr')"></div>
+                        <div><label>Freight Condition & Payable At:</label><input type="text" id="tr-freight" value="FREIGHT PREPAID AT HO CHI MINH CITY" oninput="renderDoc('tr')"></div>
+                        <div><label>Number of Original B/Ls:</label><input type="text" id="tr-orig-num" value="THREE / 3 (THREE ORIGINAL B/L ISSUED)" oninput="renderDoc('tr')"></div>
+                        <div><label>Place and Date of Issue:</label><input type="text" id="tr-issue" value="Ho Chi Minh City, Aug 18, 2026" oninput="renderDoc('tr')"></div>
+                    </div>
+                    <button class="btn btn-green" onclick="printDoc('tr-preview-area')">🖨️ IN BẢO HIỂM & BILL OF LADING FULL (PDF A4)</button>
+                </div>
+
+                <div id="tr-preview-area" class="printable-area">
+                    <div class="student-submission-header">
+                        <p><strong>BÀI NỘP THỰC HÀNH - THÔNG TIN SINH VIÊN</strong></p>
+                        <p>Họ và tên: <span class="print-student-name">....................................................</span> | MSSV: <span class="print-student-id">........................</span> | Lớp: <span class="print-student-class">........................</span></p>
+                    </div>
+                    <div class="printable-doc">
+                        <div class="doc-header-title" style="font-size: 1.2rem; border-bottom: 2px solid #000; padding-bottom: 5px;">CERTIFICATE OF INSURANCE</div>
+                        <table>
+                            <tr>
+                                <td width="50%"><strong>CERTIFICATE NO:</strong> <span id="doc-tr-ins-no"></span></td>
+                                <td width="50%"><strong>DATE OF ISSUE:</strong> <span id="doc-tr-issue-1"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>INSURED:</strong> <span id="doc-tr-insured"></span></td>
+                                <td><strong>SUM INSURED:</strong> $<span id="doc-tr-ins-sum"></span> USD</td>
+                            </tr>
+                            <tr>
+                                <td><strong>COVERAGE CONDITIONS:</strong><br><span id="doc-tr-ins-cond"></span></td>
+                                <td><strong>CLAIMS PAYABLE AT:</strong><br><span id="doc-tr-claim"></span></td>
+                            </tr>
+                        </table>
+
+                        <br>
+
+                        <div class="doc-header-title" style="font-size: 1.2rem; border-bottom: 2px solid #000; padding-bottom: 5px; margin-top:10px;">OCEAN BILL OF LADING</div>
+                        <div class="doc-sub-header">NON-NEGOTIABLE UNLESS ENDORSED / ORIGINAL</div>
+                        <table>
+                            <tr>
+                                <td width="50%" valign="top">
+                                    <strong>SHIPPER:</strong><br><span id="doc-tr-shipper"></span>
+                                </td>
+                                <td width="50%" valign="top">
+                                    <strong>B/L NO:</strong> <span id="doc-tr-bl-no"></span><br>
+                                    <strong>CARRIER:</strong> <span id="doc-tr-carrier"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>CONSIGNEE:</strong><br><span id="doc-tr-consignee"></span>
+                                </td>
+                                <td valign="top">
+                                    <strong>FREIGHT TERM:</strong> <span id="doc-tr-freight"></span><br>
+                                    <strong>NO. OF ORIGINAL B/Ls:</strong> <span id="doc-tr-orig-num"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>NOTIFY PARTY:</strong><br><span id="doc-tr-notify"></span>
+                                </td>
+                                <td valign="top">
+                                    <strong>PLACE & DATE OF ISSUE:</strong><br><span id="doc-tr-issue-2"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>PORT OF LOADING:</strong> <span id="doc-tr-pol"></span></td>
+                                <td><strong>PORT OF DISCHARGE:</strong> <span id="doc-tr-pod"></span></td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Container & Seal No.</th>
+                                    <th>Kind of Packages & Description of Goods</th>
+                                    <th>Gross Weight (KGS)</th>
+                                    <th>Measurement (CBM)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td valign="top">TCLU8899123<br>SEAL: VN123456</td>
+                                    <td valign="top">
+                                        1,000 MASTER CARTONS OF FROZEN PANGAUSIUS FILLET<br>
+                                        <small>SHIPPER'S LOAD, COUNT & SEAL | FREIGHT PREPAID</small>
+                                    </td>
+                                    <td valign="top" style="text-align:right;">11,500.00 KGS</td>
+                                    <td valign="top" style="text-align:right;">25.000 CBM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="margin-top: 15px; font-size: 0.75rem; color: #333; line-height: 1.2;">
+                            RECEIVED by the Carrier the Goods in apparent good order and condition. In accepting this Bill of Lading, the Merchant expressly accepts and agrees to all terms, conditions and exceptions contained herein whether written, printed, stamped or incorporated.
+                        </div>
+
+                        <div style="margin-top: 25px; display: table; width: 100%;">
+                            <div style="display: table-cell; width: 50%;">
+                                <strong>SHIPPED ON BOARD DATE:</strong><br>
+                                AUG 18, 2026
+                            </div>
+                            <div style="display: table-cell; width: 50%; text-align: center;">
+                                <strong>SIGNED FOR THE CARRIER / AGENT</strong><br><br><br>
+                                ___________________________________<br>
+                                Authorized Signature
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-exercise" class="tab-content">
+            <h2>MÔ PHỎNG VÀ BÀI TẬP MINH HỌA THỰC HÀNH</h2>
+            
+            <div class="simulator-card">
+                <h3>Công cụ 1: Tính toán CBM & Trọng lượng tự động</h3>
+                <p>Nhập thông số lô hàng để mô phỏng tính toán thể tích và trọng lượng đóng gói:</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                    <div><label>Chiều Dài (m):</label><input type="number" id="cbm-l" value="1.2" step="0.1"></div>
+                    <div><label>Chiều Rộng (m):</label><input type="number" id="cbm-w" value="0.8" step="0.1"></div>
+                    <div><label>Chiều Cao (m):</label><input type="number" id="cbm-h" value="1.0" step="0.1"></div>
+                    <div><label>Số Thùng (Cartons):</label><input type="number" id="cbm-q" value="100"></div>
+                    <div><label>NW/Thùng (kg):</label><input type="number" id="cbm-nw" value="15"></div>
+                    <div><label>Bao bì/Thùng (kg):</label><input type="number" id="cbm-tare" value="2"></div>
+                </div>
+                <button class="btn" style="margin-top: 15px;" onclick="calculateCBM()">TÍNH KẾT QUẢ</button>
+                <div id="cbm-result" class="box-info" style="display:none; margin-top: 10px;"></div>
+            </div>
+
+            <div class="simulator-card">
+                <h3>Công cụ 2: Tính Phí Bảo Hiểm Mua Hàng (P) & Giá Trị CIF</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                    <div><label>Giá trị CFR (USD):</label><input type="number" id="ins-cfr" value="50000"></div>
+                    <div><label>Tỷ lệ cộng thêm a (%):</label><input type="number" id="ins-a" value="10"></div>
+                    <div><label>Tỷ lệ phí bảo hiểm R (%):</label><input type="number" id="ins-r" value="0.35" step="0.01"></div>
+                </div>
+                <button class="btn" style="margin-top: 15px;" onclick="calculateInsurance()">TÍNH PHÍ BẢO HIỂM</button>
+                <div id="ins-result" class="box-warning" style="display:none; margin-top: 10px;"></div>
+            </div>
+
+            <div class="simulator-card">
+                <h3>Công cụ 3: Kiểm tra Tiêu chuẩn Xuất xứ RVC (FTA)</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">
+                    <div><label>Giá FOB (USD):</label><input type="number" id="rvc-fob" value="100"></div>
+                    <div><label>Giá trị NVL Không Xuất Xứ - VNM (USD):</label><input type="number" id="rvc-vnm" value="55"></div>
+                    <div><label>Tiêu chí RVC Yêu cầu (%):</label><input type="number" id="rvc-req" value="40"></div>
+                </div>
+                <button class="btn" style="margin-top: 15px;" onclick="calculateRVC()">KIỂM TRA TIÊU CHUẨN C/O</button>
+                <div id="rvc-result" class="box-info" style="display:none; margin-top: 10px;"></div>
+            </div>
+        </section>
+
+        <section id="tab-quiz" class="tab-content">
+            <h2>BÀI TẬP KIỂM TRA ĐÁNH GIÁ NĂNG LỰC</h2>
+            <p>Sinh viên hoàn thành các câu hỏi trắc nghiệm dưới đây và bấm Nộp bài để kiểm tra kết quả.</p>
+            
+            <form id="quiz-form" style="margin-top: 20px;">
+                <div class="form-group">
+                    <p><strong>Câu 1: Chứng từ nào sau đây KHÔNG có tính lưu thông (Non-negotiable)?</strong></p>
+                    <label><input type="radio" name="q1" value="A"> A. Bill of Lading phát hành theo lệnh (To order B/L)</label><br>
+                    <label><input type="radio" name="q1" value="B"> B. Seaway Bill</label><br>
+                    <label><input type="radio" name="q1" value="C"> C. Master Bill of Lading bản gốc</label><br>
+                    <label><input type="radio" name="q1" value="D"> D. House Bill of Lading bản gốc</label>
+                </div>
+
+                <div class="form-group">
+                    <p><strong>Câu 2: Công thức đúng để tính Tổng Thể Tích (CBM) của lô hàng là:</strong></p>
+                    <label><input type="radio" name="q2" value="A"> A. Dài(m) x Rộng(m) x Cao(m) x Số kiện</label><br>
+                    <label><input type="radio" name="q2" value="B"> B. Dài(cm) x Rộng(cm) x Cao(cm) x Số kiện</label><br>
+                    <label><input type="radio" name="q2" value="C"> C. Dài(m) + Rộng(m) + Cao(m) x Gross Weight</label>
+                </div>
+
+                <div class="form-group">
+                    <p><strong>Câu 3: Theo quy tắc gián tiếp, công thức tính RVC là:</strong></p>
+                    <label><input type="radio" name="q3" value="A"> A. RVC = (FOB / VNM) x 100%</label><br>
+                    <label><input type="radio" name="q3" value="B"> B. RVC = [(FOB - VNM) / FOB] x 100%</label><br>
+                    <label><input type="radio" name="q3" value="C"> C. RVC = [(FOB + VNM) / FOB] x 100%</label>
+                </div>
+
+                <div class="form-group">
+                    <p><strong>Câu 4: Điểm bất đồng (Discrepancy) nào sau đây bị coi là sai lệch nghiêm trọng trên bộ chứng từ?</strong></p>
+                    <label><input type="radio" name="q4" value="A"> A. Số lượng kiện trên B/L ít hơn trên Packing List</label><br>
+                    <label><input type="radio" name="q4" value="B"> B. Tên Consignee đúng 100% so với L/C</label><br>
+                    <label><input type="radio" name="q4" value="C"> C. Ngày cấp C/O diễn ra trước hoặc trùng ngày phát hành Invoice</label>
+                </div>
+
+                <button type="button" class="btn" style="margin-top: 15px;" onclick="submitQuiz()">NỘP BÀI KIỂM TRA</button>
+            </form>
+
+            <div id="quiz-result" class="box-warning" style="display:none; margin-top: 20px;"></div>
+        </section>
+    </main>
+
+    <script>
+        let studentData = {
+            name: '',
+            id: '',
+            classId: ''
+        };
+
+        // Main Navigation Tabs Logic
+        function switchTab(evt, tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            const links = document.querySelectorAll('.nav-link');
+            
+            contents.forEach(content => content.classList.remove('active'));
+            links.forEach(link => link.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Sub Navigation Tabs Logic (Theory Section)
+        function switchSubTab(evt, subTabId) {
+            const subContents = document.querySelectorAll('#tab-theory .sub-tab-content');
+            const subLinks = document.querySelectorAll('#tab-theory .sub-nav-link');
+
+            subContents.forEach(content => content.classList.remove('active'));
+            subLinks.forEach(link => link.classList.remove('active'));
+
+            document.getElementById(subTabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Sub Navigation Tabs Logic (Practice Section)
+        function switchPracticeSubTab(evt, subTabId) {
+            const subContents = document.querySelectorAll('#tab-practice .sub-tab-content');
+            const subLinks = document.querySelectorAll('#tab-practice .sub-nav-link');
+
+            subContents.forEach(content => content.classList.remove('active'));
+            subLinks.forEach(link => link.classList.remove('active'));
+
+            document.getElementById(subTabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Student Info Logic
+        function saveStudentInfo() {
+            const name = document.getElementById('fullname').value;
+            const id = document.getElementById('student-id').value;
+            const classId = document.getElementById('class-id').value;
+
+            if(!name || !id) {
+                alert('Vui lòng nhập đầy đủ Họ tên và MSSV!');
+                return;
+            }
+
+            studentData = { name, id, classId };
+
+            const displayText = `Sinh viên: ${name} | MSSV: ${id} | Lớp: ${classId || 'N/A'}`;
+            document.getElementById('display-text').innerText = displayText;
+            document.getElementById('info-display').style.display = 'block';
+
+            // Update print headers
+            document.querySelectorAll('.print-student-name').forEach(el => el.innerText = name);
+            document.querySelectorAll('.print-student-id').forEach(el => el.innerText = id);
+            document.querySelectorAll('.print-student-class').forEach(el => el.innerText = classId || 'N/A');
+
+            alert('Lưu thông tin thành công!');
+        }
+
+        // Dynamic Interactive Invoice Preview (Theory Tab)
+        function updateInvoicePreview() {
+            const name = document.getElementById('sim-prod-name').value || 'N/A';
+            const qty = parseFloat(document.getElementById('sim-prod-qty').value) || 0;
+            const price = parseFloat(document.getElementById('sim-prod-price').value) || 0;
+            const total = qty * price;
+
+            document.getElementById('prev-name').innerText = name;
+            document.getElementById('prev-qty').innerText = qty;
+            document.getElementById('prev-price').innerText = price;
+            document.getElementById('prev-total').innerText = total.toLocaleString();
+        }
+
+        // Dynamic Interactive RVC Bar Chart (Theory Tab)
+        function updateRVCBar() {
+            let val = parseFloat(document.getElementById('sim-rvc-input').value) || 0;
+            if(val > 100) val = 100;
+            if(val < 0) val = 0;
+
+            const bar = document.getElementById('rvc-bar-fill');
+            const status = document.getElementById('rvc-status-text');
+
+            bar.style.width = val + '%';
+            bar.innerText = val + '%';
+
+            if(val >= 40) {
+                bar.style.backgroundColor = 'var(--accent-green)';
+                status.style.color = 'var(--accent-green)';
+                status.innerText = 'Status: Đạt tiêu chuẩn cấp C/O Ưu đãi (>= 40%)';
+            } else {
+                bar.style.backgroundColor = 'var(--accent-red)';
+                status.style.color = 'var(--accent-red)';
+                status.innerText = 'Status: KHÔNG ĐẠT tiêu chuẩn xuất xứ (< 40%)';
+            }
+        }
+
+        // Helper function to convert number to words for Invoice
+        function numberToWords(num) {
+            if (num === 0) return "Zero US Dollars";
+            const a = ['','One ','Two ','Three ','Four ','Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
+            const b = ['', '', 'Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+            
+            function inWords(n) {
+                if ((n = n.toString()).length > 9) return 'overflow';
+                let n_array = ('000000000' + n).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                if (!n_array) return ''; 
+                let str = '';
+                str += (n_array[1] != 0) ? (a[Number(n_array[1])] || b[n_array[1][0]] + ' ' + a[n_array[1][1]]) + 'Crore ' : '';
+                str += (n_array[2] != 0) ? (a[Number(n_array[2])] || b[n_array[2][0]] + ' ' + a[n_array[2][1]]) + 'Lakh ' : '';
+                str += (n_array[3] != 0) ? (a[Number(n_array[3])] || b[n_array[3][0]] + ' ' + a[n_array[3][1]]) + 'Thousand ' : '';
+                str += (n_array[4] != 0) ? (a[Number(n_array[4])] || b[n_array[4][0]] + ' ' + a[n_array[4][1]]) + 'Hundred ' : '';
+                str += (n_array[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n_array[5])] || b[n_array[5][0]] + ' ' + a[n_array[5][1]]) : '';
+                return str;
+            }
+
+            const dollars = Math.floor(num);
+            const cents = Math.round((num - dollars) * 100);
+            let result = inWords(dollars) + "SAY US DOLLARS ";
+            if (cents > 0) {
+                result += "AND " + inWords(cents) + "CENTS";
+            } else {
+                result += "ONLY";
+            }
+            return result.toUpperCase();
+        }
+
+        // Render Practice Documents Dynamically (Full Version)
+        function renderDoc(type) {
+            if (type === 'inv') {
+                const shipper = document.getElementById('inv-shipper').value.replace(/\n/g, '<br>');
+                const consignee = document.getElementById('inv-consignee').value.replace(/\n/g, '<br>');
+                const notify = document.getElementById('inv-notify').value.replace(/\n/g, '<br>');
+                const invNo = document.getElementById('inv-no').value;
+                const invDate = document.getElementById('inv-date').value;
+                const contract = document.getElementById('inv-contract').value;
+                const lc = document.getElementById('inv-lc').value;
+                const payment = document.getElementById('inv-payment').value;
+                const incoterms = document.getElementById('inv-incoterms').value;
+                const vessel = document.getElementById('inv-vessel').value;
+                const pol = document.getElementById('inv-pol').value;
+                const pod = document.getElementById('inv-pod').value;
+                const marks = document.getElementById('inv-marks').value;
+                const bank = document.getElementById('inv-bank').value;
+                const desc = document.getElementById('inv-desc').value;
+                const hscode = document.getElementById('inv-hscode').value;
+                const qty = parseFloat(document.getElementById('inv-qty').value) || 0;
+                const price = parseFloat(document.getElementById('inv-price').value) || 0;
+                const totalNum = qty * price;
+                const totalStr = totalNum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+                document.getElementById('doc-inv-shipper').innerHTML = shipper;
+                document.getElementById('doc-inv-consignee').innerHTML = consignee;
+                document.getElementById('doc-inv-notify').innerHTML = notify;
+                document.getElementById('doc-inv-no').innerText = invNo;
+                document.getElementById('doc-inv-date').innerText = invDate;
+                document.getElementById('doc-inv-contract').innerText = contract;
+                document.getElementById('doc-inv-lc').innerText = lc;
+                document.getElementById('doc-inv-payment').innerText = payment;
+                document.getElementById('doc-inv-incoterms').innerText = incoterms;
+                document.getElementById('doc-inv-vessel').innerText = vessel;
+                document.getElementById('doc-inv-pol').innerText = pol;
+                document.getElementById('doc-inv-pod').innerText = pod;
+                document.getElementById('doc-inv-marks').innerText = marks;
+                document.getElementById('doc-inv-bank').innerText = bank;
+                document.getElementById('doc-inv-desc').innerText = desc;
+                document.getElementById('doc-inv-hscode').innerText = hscode;
+                document.getElementById('doc-inv-qty').innerText = qty.toLocaleString();
+                document.getElementById('doc-inv-qty-2').innerText = qty.toLocaleString();
+                document.getElementById('doc-inv-price').innerText = price.toFixed(2);
+                document.getElementById('doc-inv-total').innerText = totalStr;
+                document.getElementById('doc-inv-total-2').innerText = totalStr;
+                document.getElementById('doc-inv-words').innerText = numberToWords(totalNum);
+
+            } else if (type === 'pl') {
+                const shipper = document.getElementById('pl-shipper').value.replace(/\n/g, '<br>');
+                const consignee = document.getElementById('pl-consignee').value.replace(/\n/g, '<br>');
+                const plNo = document.getElementById('pl-no').value;
+                const plDate = document.getElementById('pl-date').value;
+                const invRef = document.getElementById('pl-inv-ref').value;
+                const cont = document.getElementById('pl-cont').value;
+                const ports = document.getElementById('pl-ports').value;
+                const desc = document.getElementById('pl-desc').value;
+                const qty = parseFloat(document.getElementById('pl-qty').value) || 0;
+                const nwPkg = parseFloat(document.getElementById('pl-nw-pkg').value) || 0;
+                const gwPkg = parseFloat(document.getElementById('pl-gw-pkg').value) || 0;
+                const cbmPkg = parseFloat(document.getElementById('pl-cbm-pkg').value) || 0;
+
+                const totalNWNum = qty * nwPkg;
+                const totalGWNum = qty * gwPkg;
+                const totalNW = totalNWNum.toLocaleString('en-US', {maximumFractionDigits: 2});
+                const totalGW = totalGWNum.toLocaleString('en-US', {maximumFractionDigits: 2});
+                const totalCBM = (qty * cbmPkg).toLocaleString('en-US', {maximumFractionDigits: 3});
+
+                document.getElementById('doc-pl-shipper').innerHTML = shipper;
+                document.getElementById('doc-pl-consignee').innerHTML = consignee;
+                document.getElementById('doc-pl-no').innerText = plNo;
+                document.getElementById('doc-pl-date').innerText = plDate;
+                document.getElementById('doc-pl-inv-ref').innerText = invRef;
+                document.getElementById('doc-pl-cont').innerText = cont;
+                document.getElementById('doc-pl-ports').innerText = ports;
+                document.getElementById('doc-pl-desc').innerText = desc;
+                document.getElementById('doc-pl-qty').innerText = qty.toLocaleString();
+                document.getElementById('doc-pl-qty-2').innerText = qty.toLocaleString();
+                document.getElementById('doc-pl-nw-pkg').innerText = nwPkg.toFixed(2);
+                document.getElementById('doc-pl-gw-pkg').innerText = gwPkg.toFixed(2);
+                
+                document.getElementById('doc-pl-total-nw').innerText = totalNW;
+                document.getElementById('doc-pl-total-nw-2').innerText = totalNW;
+                document.getElementById('doc-pl-total-gw').innerText = totalGW;
+                document.getElementById('doc-pl-total-gw-2').innerText = totalGW;
+                document.getElementById('doc-pl-total-cbm').innerText = totalCBM;
+                document.getElementById('doc-pl-total-cbm-2').innerText = totalCBM;
+                document.getElementById('doc-pl-total-vessel-gw').innerText = (totalGWNum + 4200).toLocaleString('en-US', {maximumFractionDigits: 2});
+
+            } else if (type === 'tr') {
+                document.getElementById('doc-tr-ins-no').innerText = document.getElementById('tr-ins-no').value;
+                document.getElementById('doc-tr-insured').innerText = document.getElementById('tr-insured').value;
+                document.getElementById('doc-tr-ins-sum').innerText = parseFloat(document.getElementById('tr-ins-sum').value || 0).toLocaleString();
+                document.getElementById('doc-tr-ins-cond').innerText = document.getElementById('tr-ins-cond').value;
+                document.getElementById('doc-tr-claim').innerText = document.getElementById('tr-claim').value;
+
+                document.getElementById('doc-tr-bl-no').innerText = document.getElementById('tr-bl-no').value;
+                document.getElementById('doc-tr-carrier').innerText = document.getElementById('tr-carrier').value;
+                document.getElementById('doc-tr-shipper').innerText = document.getElementById('tr-shipper').value;
+                document.getElementById('doc-tr-consignee').innerHTML = document.getElementById('tr-consignee').value.replace(/\n/g, '<br>');
+                document.getElementById('doc-tr-notify').innerHTML = document.getElementById('tr-notify').value.replace(/\n/g, '<br>');
+                document.getElementById('doc-tr-pol').innerText = document.getElementById('tr-pol').value;
+                document.getElementById('doc-tr-pod').innerText = document.getElementById('tr-pod').value;
+                document.getElementById('doc-tr-freight').innerText = document.getElementById('tr-freight').value;
+                document.getElementById('doc-tr-orig-num').innerText = document.getElementById('tr-orig-num').value;
+                document.getElementById('doc-tr-issue-1').innerText = document.getElementById('tr-issue').value;
+                document.getElementById('doc-tr-issue-2').innerText = document.getElementById('tr-issue').value;
+            }
+        }
+
+        // Print Specific Document Section
+        function printDoc(areaId) {
+            if(!studentData.name || !studentData.id) {
+                if(!confirm('Bạn chưa điền/lưu Thông tin Sinh viên ở Tab 1. Bạn có muốn tiếp tục in không?')) {
+                    return;
+                }
+            }
+
+            const activeSection = document.getElementById('tab-practice');
+            activeSection.classList.add('print-active');
+            
+            window.print();
+
+            activeSection.classList.remove('print-active');
+        }
+
+        // Simulator 1: CBM Calculation
+        function calculateCBM() {
+            const l = parseFloat(document.getElementById('cbm-l').value) || 0;
+            const w = parseFloat(document.getElementById('cbm-w').value) || 0;
+            const h = parseFloat(document.getElementById('cbm-h').value) || 0;
+            const q = parseInt(document.getElementById('cbm-q').value) || 0;
+            const nwPerCarton = parseFloat(document.getElementById('cbm-nw').value) || 0;
+            const tarePerCarton = parseFloat(document.getElementById('cbm-tare').value) || 0;
+
+            const totalCBM = (l * w * h * q).toFixed(3);
+            const totalNW = (nwPerCarton * q).toFixed(2);
+            const totalGW = ((nwPerCarton + tarePerCarton) * q).toFixed(2);
+
+            const resDiv = document.getElementById('cbm-result');
+            resDiv.innerHTML = `
+                <strong>KẾT QUẢ TÍNH TOÁN TỰ ĐỘNG:</strong><br>
+                - Tổng thể tích (Total CBM): <strong>${totalCBM} m³</strong><br>
+                - Tổng Trọng lượng Tịnh (Total Net Weight): <strong>${totalNW} kg</strong><br>
+                - Tổng Trọng lượng Cả bì (Total Gross Weight): <strong>${totalGW} kg</strong>
+            `;
+            resDiv.style.display = 'block';
+        }
+
+        // Simulator 2: Insurance Calculation
+        function calculateInsurance() {
+            const cfr = parseFloat(document.getElementById('ins-cfr').value) || 0;
+            const a = parseFloat(document.getElementById('ins-a').value) / 100 || 0;
+            const r = parseFloat(document.getElementById('ins-r').value) / 100 || 0;
+
+            const I = (cfr * (1 + a)) / (1 - r);
+            const P = I * r;
+
+            const resDiv = document.getElementById('ins-result');
+            resDiv.innerHTML = `
+                <strong>KẾT QUẢ TÍNH PHÍ BẢO HIỂM:</strong><br>
+                - Số tiền bảo hiểm (I): <strong>$${I.toFixed(2)} USD</strong><br>
+                - Phí bảo hiểm phải nộp (P): <strong>$${P.toFixed(2)} USD</strong>
+            `;
+            resDiv.style.display = 'block';
+        }
+
+        // Simulator 3: RVC Calculation
+        function calculateRVC() {
+            const fob = parseFloat(document.getElementById('rvc-fob').value) || 0;
+            const vnm = parseFloat(document.getElementById('rvc-vnm').value) || 0;
+            const req = parseFloat(document.getElementById('rvc-req').value) || 0;
+
+            if(fob <= 0) {
+                alert('Giá FOB phải lớn hơn 0');
+                return;
+            }
+
+            const rvc = ((fob - vnm) / fob) * 100;
+            const isQualified = rvc >= req;
+
+            const resDiv = document.getElementById('rvc-result');
+            resDiv.innerHTML = `
+                <strong>KẾT QUẢ KIỂM TRA RVC (INDIRECT METHOD):</strong><br>
+                - Hàm lượng RVC đạt được: <strong>${rvc.toFixed(2)}%</strong><br>
+                - Trạng thái: ${isQualified ? 
+                    '<span style="color: green; font-weight: bold;">ĐẠT TIÊU CHUẨN XUẤT XỨ (C/O Approved)</span>' : 
+                    '<span style="color: var(--accent-red); font-weight: bold;">KHÔNG ĐẠT TIÊU CHUẨN XUẤT XỨ</span>'}
+            `;
+            resDiv.style.display = 'block';
+        }
+
+        // Quiz Submission Logic
+        function submitQuiz() {
+            const answers = {
+                q1: 'B',
+                q2: 'A',
+                q3: 'B',
+                q4: 'A'
+            };
+
+            let score = 0;
+            let total = 4;
+
+            const q1Val = document.querySelector('input[name="q1"]:checked')?.value;
+            const q2Val = document.querySelector('input[name="q2"]:checked')?.value;
+            const q3Val = document.querySelector('input[name="q3"]:checked')?.value;
+            const q4Val = document.querySelector('input[name="q4"]:checked')?.value;
+
+            if(q1Val === answers.q1) score++;
+            if(q2Val === answers.q2) score++;
+            if(q3Val === answers.q3) score++;
+            if(q4Val === answers.q4) score++;
+
+            const studentName = studentData.name || document.getElementById('fullname').value || "Sinh viên";
+            const resDiv = document.getElementById('quiz-result');
+            
+            resDiv.innerHTML = `
+                <h3>KẾT QUẢ KIỂM TRA CỦA ${studentName.toUpperCase()}</h3>
+                <p>Số câu đúng: <strong>${score}/${total}</strong> (${(score/total)*100}%)</p>
+                <p>Đánh giá: ${score === total ? 'Xuất sắc! Bạn đã nắm vững lý thuyết và nghiệp vụ.' : 'Cần ôn tập lại các phần lý thuyết chưa đạt.'}</p>
+            `;
+            resDiv.style.display = 'block';
+        }
+
+        // Initialize document previews on load
+        window.onload = function() {
+            renderDoc('inv');
+            renderDoc('pl');
+            renderDoc('tr');
+        };
+    </script>
+</body>
+</html>
